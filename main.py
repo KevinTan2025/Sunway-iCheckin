@@ -54,7 +54,7 @@ def load_users():
     except Exception as e:
         print(f"无法读取用户文件: {e}")
         # 如果无法读取文件，提供示例用户
-        users = [{"id": "24018566", "password": "xxxxxxxxxx"}]
+        users = [{"id": "your_id", "password": "your_password"}]
     return users
 
 # 读取用户代理和用户信息
