@@ -2,7 +2,7 @@
 
 This project is designed to automatically log in to the Sunway iZone platform in batches and complete iCheckin for multiple accounts. It is ideal for users who need to automate iCheckin for several accounts.
 
-[🌟 English](README.md) | [🌏 中文](README_CN.md)
+[🌟 English](README.md) | [🌏 中文](README-CN.md)
 
 ## Table of Contents
 

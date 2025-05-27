@@ -2,7 +2,7 @@
 
 本项目用于自动批量登录 Sunway iZone 平台并完成打卡，适合需要为多个账号自动完成 iCheckin 操作的用户。
 
-[🌟 English](README.md) | [🌏 中文](README_CN.md)
+[🌟 English](README.md) | [🌏 中文](README-CN.md)
 
 
 ## 目录
