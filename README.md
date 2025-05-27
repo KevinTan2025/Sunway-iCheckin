@@ -1,66 +1,68 @@
-# Sunway iCheckin 批量自动打卡工具
+# Sunway iCheckin Bulk Auto Check-in Tool
 
-本项目用于自动批量登录 Sunway iZone 平台并完成打卡，适合需要为多个账号自动完成 iCheckin 操作的用户。
+This project is designed to automatically log in to the Sunway iZone platform in batches and complete iCheckin for multiple accounts. It is ideal for users who need to automate iCheckin for several accounts.
 
-## 目录
+[🌟 English](README.md) | [🌏 中文](README_CN.md)
 
-* [环境要求](#环境要求)
-* [快速开始](#快速开始)
+## Table of Contents
 
-  * [1. 安装 uv 包管理器](#1-安装-uv-包管理器)
-  * [2. 安装依赖](#2-安装依赖)
-  * [3. 配置用户文件 users.csv](#3-配置用户文件-userscsv)
-  * [4. 可选：配置 ua.csv](#4-可选配置-uacsv)
-  * [5. 运行脚本](#5-运行脚本)
-* [users.csv 格式说明](#userscsv-格式说明)
-* [ua.csv 格式说明](#uacsv-格式说明)
-* [常见问题](#常见问题)
-* [致谢](#致谢)
+* [Requirements](#requirements)
+* [Quick Start](#quick-start)
 
----
-
-## 环境要求
-
-* Python 3.8 及以上
-* 推荐使用 [`uv`](https://docs.astral.sh/uv/getting-started/installation/) 进行依赖管理和运行（更快更简洁！）
+  * [1. Install uv Package Manager](#1-install-uv-package-manager)
+  * [2. Install Dependencies](#2-install-dependencies)
+  * [3. Configure users.csv](#3-configure-userscsv)
+  * [4. (Optional) Configure ua.csv](#4-optional-configure-uacsv)
+  * [5. Run the Script](#5-run-the-script)
+* [users.csv Format](#userscsv-format)
+* [ua.csv Format](#uacsv-format)
+* [FAQ](#faq)
+* [Acknowledgements](#acknowledgements)
 
 ---
 
-## 快速开始
+## Requirements
 
-### 1. 安装 uv 包管理器
+* Python 3.8 or higher
+* It is recommended to use [`uv`](https://docs.astral.sh/uv/getting-started/installation/) for dependency management and running the script (it's faster and easier!)
 
-uv 是一个比 pip 更快、更干净的包管理工具。推荐用它来安装依赖和运行脚本。
+---
 
-**安装方法：**
+## Quick Start
 
-* **适用于Windows系统**
+### 1. Install uv Package Manager
+
+uv is a faster and cleaner package management tool compared to pip. It's recommended for installing dependencies and running scripts.
+
+**Installation:**
+
+* **For Windows:**
 
   ```bash
   powershell -c "irm https://astral.sh/uv/install.ps1 | more"
   ```
-* **适用于 macOS/Linux系统**
+* **For macOS/Linux:**
 
   ```bash
   curl -LsSf https://astral.sh/uv/install.sh | less
   ```
-* 更多平台和方式，请查看官方文档：[uv 安装教程](https://docs.astral.sh/uv/getting-started/installation/)
+* For more platforms and methods, check the official docs: [uv Installation Guide](https://docs.astral.sh/uv/getting-started/installation/)
 
 ---
 
-### 2. 安装依赖
+### 2. Install Dependencies
 
-在项目根目录下执行：
+In the project root directory, run:
 
 ```bash
 uv sync
 ```
 
-### 3. 配置用户文件 users.csv
+### 3. Configure users.csv
 
-在项目目录下，**新建或编辑 `users.csv` 文件**，用来填写需要打卡的所有用户账号和密码。
+Create or edit the `users.csv` file in your project directory. This file should include all the user IDs and passwords for the accounts you want to check in.
 
-**格式如下：**
+**Format:**
 
 ```csv
 id,password
@@ -69,10 +71,10 @@ your_id_2,your_password_2
 ...
 ```
 
-> ⚠️ 第一行为表头，**不要删除**。
-> ⚠️ 一行一个账号，`id` 为学号，`password` 为密码。
+> ⚠️ The first line is the header. **Do not remove it.**
+> ⚠️ One account per line. `id` is the student ID, `password` is the password.
 
-**示例：**
+**Example:**
 
 ```csv
 id,password
@@ -82,12 +84,11 @@ id,password
 
 ---
 
-### 4. 可选：配置 ua.csv
+### 4. (Optional) Configure ua.csv
 
-`ua.csv` 用于自定义/批量设置 User-Agent，可提升安全性和模拟不同设备。
-没有 `ua.csv` 时，脚本会用内置默认 UA。
+`ua.csv` allows you to set custom/bulk User-Agents for added security and device simulation. If not provided, the script will use a built-in default User-Agent.
 
-**格式如下：**
+**Format:**
 
 ```csv
 user_agent
@@ -96,40 +97,40 @@ Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, lik
 ...
 ```
 
-> 第一行为表头。
+> The first line is the header.
 
 ---
 
-### 5. 运行脚本
+### 5. Run the Script
 
-在命令行输入：
+Run the following command in your terminal:
 
 ```bash
 uv python main.py
 ```
 
-或（如无 uv，可直接用 Python，但推荐用 uv）：
+Or (if you don't have uv, you can use Python directly, but uv is recommended):
 
 ```bash
 python main.py
 ```
 
-运行后，脚本会提示输入一次打卡码（checkin code），**所有用户都会使用同一个 code 进行打卡**。
+When running, the script will prompt you to enter the check-in code (iCheckin code). **All users will use the same code for check-in.**
 
 ---
 
-## users.csv 格式说明
+## users.csv Format
 
-* 必须在项目同级目录下
-* UTF-8 编码保存
-* 格式固定为：
+* Must be in the project root directory
+* Save as UTF-8 encoding
+* Fixed format:
 
   ```
   id,password
-  你的学号,你的密码
+  your_student_id,your_password
   ...
   ```
-* 示例：
+* Example:
 
   ```
   id,password
@@ -139,13 +140,13 @@ python main.py
 
 ---
 
-## ua.csv 格式说明
+## ua.csv Format
 
-* 可选文件
-* 用于批量自定义 User-Agent
-* 仅需填写 user\_agent 字段，每行一个 UA 字符串
+* Optional file
+* Used for bulk custom User-Agent
+* Only need to fill in the `user_agent` field, one UA string per line
 
-示例内容：
+Example content:
 
 ```
 user_agent
@@ -155,30 +156,28 @@ Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ...
 
 ---
 
-## 常见问题
+## FAQ
 
-1. **为什么会提示用户登录失败？**
+1. **Why does it say login failed for a user?**
 
-   * 请检查 `users.csv` 中账号密码是否正确
-   * 注意密码不要用错字符或中文符号
-2. **打卡失败或提示已打卡？**
+   * Please check if the IDs and passwords in `users.csv` are correct
+   * Be careful not to use wrong characters or Chinese symbols in the password
+2. **Check-in failed or shows already checked in?**
 
-   * 同一 code 多次打卡会提示“已打卡”
-   * code 必须是当时有效的 iCheckin code （通常有效时间为 30 分钟）
-3. **users.csv/ua.csv 打不开或出错？**
+   * Using the same code multiple times will result in an "already checked in" message
+   * The code must be a valid and currently active iCheckin code (usually valid for 30 minutes)
+3. **Can't open or error with users.csv/ua.csv?**
 
-   * 确保文件是 UTF-8 编码，且表头与内容格式正确
+   * Make sure the file is UTF-8 encoded and the header and content format are correct
 
 ---
 
-## 致谢
+## Acknowledgements
 
-感谢 [uv](https://docs.astral.sh/uv/) 团队和所有开源社区的支持。
+Thanks to the [uv](https://docs.astral.sh/uv/) team and all open-source contributors for their support.
 
-shenming1115 ([GitHub 主页](https://github.com/shenming1115))
+shenming1115 ([GitHub Profile](https://github.com/shenming1115))
 
-KevinTan2025 ([GitHub 主页](https://github.com/KevinTan2025))
+KevinTan2025 ([GitHub Profile](https://github.com/KevinTan2025))
 
-
-
-如有任何问题，欢迎提 Issues 或留言！
+If you have any questions, feel free to open an Issue or leave a message!
