@@ -1,0 +1,98 @@
+import requests
+from bs4 import BeautifulSoup
+import csv
+import random
+import os
+import urllib3
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+LOGIN_URL = "https://izone.sunway.edu.my/login"
+CHECKIN_URL = "https://izone.sunway.edu.my/icheckin/iCheckinNowWithCode"
+PROFILE_URL = "https://izone.sunway.edu.my/student/myProfile"
+
+def load_user_agents():
+    ua_file = os.path.join(os.path.dirname(__file__), 'ua.csv')
+    user_agents = []
+    try:
+        with open(ua_file, 'r') as csvfile:
+            reader = csv.reader(csvfile)
+            next(reader)
+            for row in reader:
+                if row and row[0].strip():
+                    user_agents.append(row[0].strip())
+    except Exception as e:
+        print(f"Failed to read user agent file: {e}")
+        user_agents = ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"]
+    return user_agents
+
+def load_users():
+    users_file = os.path.join(os.path.dirname(__file__), 'users.csv')
+    users = []
+    try:
+        with open(users_file, 'r') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                if 'id' in row and 'password' in row:
+                    users.append({'id': row['id'], 'password': row['password'], 'memo': row.get('memo', '')})
+    except Exception as e:
+        print(f"Failed to read user file: {e}")
+    return users
+
+def checkin_user(user, checkin_code, user_agents, log=print):
+    log(f"\n🔁 Trying to login user: {user['id']}")
+    current_ua = random.choice(user_agents)
+    headers = {
+        "User-Agent": current_ua,
+        "Origin": "https://izone.sunway.edu.my",
+        "Referer": LOGIN_URL,
+        "Content-Type": "application/x-www-form-urlencoded",
+    }
+    log(f"📱 Using UA: {current_ua[:30]}...")
+    session = requests.Session()
+    session.headers.update(headers)
+
+    resp = session.get(LOGIN_URL, verify=False)
+    soup = BeautifulSoup(resp.text, 'html.parser')
+    nc_token = soup.find("input", {"name": "__ncforminfo"})
+    nc_value = nc_token["value"] if nc_token else ""
+
+    login_data = {
+        "form_action": "submitted",
+        "student_uid": user["id"],
+        "password": user["password"],
+        "g-recaptcha-response": "",
+        "__ncforminfo": nc_value,
+    }
+    resp_post = session.post(LOGIN_URL, data=login_data, verify=False)
+    soup2 = BeautifulSoup(resp_post.text, 'html.parser')
+    error_msg = soup2.find(id="msg")
+    if error_msg:
+        if "invalid" in error_msg.text.lower():
+            log(f"❌ User {user['id']} login failed: {error_msg.text.strip()}")
+            return False
+        else:
+            log(f"⚠️ User {user['id']} login warning: {error_msg.text.strip()}")
+    if "logout" not in resp_post.text.lower():
+        log(f"❌ User {user['id']} may have failed to login: login page element not detected")
+        return False
+
+    resp_profile = session.get(PROFILE_URL, verify=False)
+    soup_profile = BeautifulSoup(resp_profile.text, 'html.parser')
+    name_tag = soup_profile.find("div", class_="panel-heading")
+    username = name_tag.text.strip() if name_tag else f"{user['id']}"
+
+    checkin_payload = {"checkin_code": checkin_code}
+    resp_checkin = session.post(CHECKIN_URL, data=checkin_payload, verify=False)
+    soup_checkin = BeautifulSoup(resp_checkin.text, "html.parser")
+    alerts = soup_checkin.find_all("div", class_="alert")
+    for alert in alerts:
+        text = alert.get_text(strip=True)
+        if "already checked in" in text.lower() or "have already checked in" in text.lower():
+            log(f"⚠️ User {username} has already checked in: {text}")
+            return True
+        elif "not valid" in text.lower() or "not in this class" in text.lower():
+            log(f"❌ User {username} check-in failed: {text}")
+            return False
+    log(f"✅ User {username} checked in successfully!")
+    return True
