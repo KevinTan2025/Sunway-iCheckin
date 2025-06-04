@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
+import json
 import random
 import os
 import urllib3
@@ -10,6 +11,8 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 LOGIN_URL = "https://izone.sunway.edu.my/login"
 CHECKIN_URL = "https://izone.sunway.edu.my/icheckin/iCheckinNowWithCode"
 PROFILE_URL = "https://izone.sunway.edu.my/student/myProfile"
+USERS_JSON = os.path.join(os.path.dirname(__file__), "users.json")
+USERS_CSV = os.path.join(os.path.dirname(__file__), "users.csv")
 
 def load_user_agents():
     ua_file = os.path.join(os.path.dirname(__file__), 'ua.csv')
@@ -27,17 +30,33 @@ def load_user_agents():
     return user_agents
 
 def load_users():
-    users_file = os.path.join(os.path.dirname(__file__), 'users.csv')
+    """Load users from a JSON file if it exists, otherwise fall back to CSV."""
     users = []
-    try:
-        with open(users_file, 'r') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                if 'id' in row and 'password' in row:
-                    users.append({'id': row['id'], 'password': row['password'], 'memo': row.get('memo', '')})
-    except Exception as e:
-        print(f"Failed to read user file: {e}")
+    if os.path.exists(USERS_JSON):
+        try:
+            with open(USERS_JSON, "r", encoding="utf-8") as f:
+                users = json.load(f)
+        except Exception as e:
+            print(f"Failed to read {USERS_JSON}: {e}")
+    else:
+        try:
+            with open(USERS_CSV, "r", encoding="utf-8") as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    if "id" in row and "password" in row:
+                        users.append({"id": row["id"], "password": row["password"], "memo": row.get("memo", "")})
+        except Exception as e:
+            print(f"Failed to read {USERS_CSV}: {e}")
     return users
+
+
+def save_users(users):
+    """Save user list to JSON."""
+    try:
+        with open(USERS_JSON, "w", encoding="utf-8") as f:
+            json.dump(users, f, indent=2)
+    except Exception as e:
+        print(f"Failed to save {USERS_JSON}: {e}")
 
 def checkin_user(user, checkin_code, user_agents, log=print):
     log(f"\n🔁 Trying to login user: {user['id']}")

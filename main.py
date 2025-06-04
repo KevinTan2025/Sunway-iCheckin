@@ -5,7 +5,7 @@ def main():
     user_agents = load_user_agents()
     users = load_users()
     if not users:
-        print("No users found in users.csv")
+        print("No users found. Please configure users.json or users.csv")
         return
     checkin_code = input("Please enter iCheckin Code (for all users): ").strip()
     for user in users:
