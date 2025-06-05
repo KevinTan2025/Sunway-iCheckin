@@ -11,3 +11,9 @@ wheels/
 
 # Private credentials
 *.json
+
+Exe Packaging
+*.exe
+*.spec
+*.txt
+*.ico
