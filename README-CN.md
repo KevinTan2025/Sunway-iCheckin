@@ -105,8 +105,7 @@ id,password
 
 ### 4. 可选：配置 ua.csv
 
-`ua.csv` 用于自定义/批量设置 User-Agent，可提升安全性和模拟不同设备。
-没有 `ua.csv` 时，脚本会用内置默认 UA。
+脚本内部已自带少量常用 User-Agent。如果需要自定义或增加列表，在同一目录下创建 `ua.csv` 文件即可，文件内容会覆盖内置列表。
 
 **格式如下：**
 
@@ -163,8 +162,8 @@ python main.py
 ## ua.csv 格式说明
 
 * 可选文件
-* 用于批量自定义 User-Agent
-* 仅需填写 user\_agent 字段，每行一个 UA 字符串
+* 覆盖脚本内置的 User-Agent 列表
+* 仅需填写 `user_agent` 字段，每行一个 UA 字符串
 
 示例内容：
 

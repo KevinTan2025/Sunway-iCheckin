@@ -24,19 +24,34 @@ else:
 USERS_JSON = os.path.join(BASE_DIR, "users.json")
 USERS_CSV = os.path.join(BASE_DIR, "users.csv")
 
+# Built-in list of User-Agent strings. `ua.csv` can override or extend this
+# list if present in the same directory as the script or packaged executable.
+DEFAULT_USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (iPad; CPU OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/136.0.0.0 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 16_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+]
+
 def load_user_agents():
-    ua_file = os.path.join(BASE_DIR, 'ua.csv')
+    """Return a list of User-Agent strings."""
+    ua_file = os.path.join(BASE_DIR, "ua.csv")
     user_agents = []
-    try:
-        with open(ua_file, 'r') as csvfile:
-            reader = csv.reader(csvfile)
-            next(reader)
-            for row in reader:
-                if row and row[0].strip():
-                    user_agents.append(row[0].strip())
-    except Exception as e:
-        print(f"Failed to read user agent file: {e}")
-        user_agents = ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"]
+    if os.path.exists(ua_file):
+        try:
+            with open(ua_file, "r", encoding="utf-8") as csvfile:
+                reader = csv.reader(csvfile)
+                next(reader, None)
+                for row in reader:
+                    if row and row[0].strip():
+                        user_agents.append(row[0].strip())
+        except Exception as e:
+            print(f"Failed to read user agent file: {e}")
+
+    if not user_agents:
+        user_agents = DEFAULT_USER_AGENTS
     return user_agents
 
 def load_users():
