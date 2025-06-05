@@ -86,7 +86,7 @@ id,password
 
 ### 4. (Optional) Configure ua.csv
 
-`ua.csv` allows you to set custom/bulk User-Agents for added security and device simulation. If not provided, the script will use a built-in default User-Agent.
+The script already includes a small set of common User-Agents. If you want to supply your own list, create a `ua.csv` file in the same folder. When present, the file overrides the built-in list.
 
 **Format:**
 
@@ -143,7 +143,7 @@ When running, the script will prompt you to enter the check-in code (iCheckin co
 ## ua.csv Format
 
 * Optional file
-* Used for bulk custom User-Agent
+* Overrides the internal User-Agent list
 * Only need to fill in the `user_agent` field, one UA string per line
 
 Example content:
