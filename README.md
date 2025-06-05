@@ -170,6 +170,10 @@ Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ...
 
    * Make sure the file is UTF-8 encoded and the header and content format are correct
 
+4. **Where is users.json saved when using the packaged executable?**
+
+   * When running the GUI or a PyInstaller-built `.exe`, the `users.json` file will be created in the same directory as the executable. Ensure that directory is writable so your user list can be saved.
+
 ---
 
 ## Acknowledgements

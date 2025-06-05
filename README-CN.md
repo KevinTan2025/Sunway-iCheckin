@@ -172,6 +172,10 @@ Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ...
 
    * 确保文件是 UTF-8 编码，且表头与内容格式正确
 
+4. **打包成可执行文件后，users.json 保存在哪里？**
+
+   * 在 GUI 或使用 PyInstaller 打包后的 `.exe` 运行时，`users.json` 会生成在可执行文件所在的目录。请确保该目录具有写入权限，以便保存用户列表。
+
 ---
 
 ## 致谢

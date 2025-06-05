@@ -4,6 +4,7 @@ import csv
 import json
 import random
 import os
+import sys
 import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -11,11 +12,20 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 LOGIN_URL = "https://izone.sunway.edu.my/login"
 CHECKIN_URL = "https://izone.sunway.edu.my/icheckin/iCheckinNowWithCode"
 PROFILE_URL = "https://izone.sunway.edu.my/student/myProfile"
-USERS_JSON = os.path.join(os.path.dirname(__file__), "users.json")
-USERS_CSV = os.path.join(os.path.dirname(__file__), "users.csv")
+
+# When packaged with PyInstaller (sys.frozen), __file__ points inside a
+# temporary extraction directory that is removed after execution. To persist
+# user files next to the executable, resolve paths differently in that case.
+if getattr(sys, "frozen", False):
+    BASE_DIR = os.path.dirname(sys.executable)
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+USERS_JSON = os.path.join(BASE_DIR, "users.json")
+USERS_CSV = os.path.join(BASE_DIR, "users.csv")
 
 def load_user_agents():
-    ua_file = os.path.join(os.path.dirname(__file__), 'ua.csv')
+    ua_file = os.path.join(BASE_DIR, 'ua.csv')
     user_agents = []
     try:
         with open(ua_file, 'r') as csvfile:
