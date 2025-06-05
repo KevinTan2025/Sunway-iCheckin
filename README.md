@@ -4,11 +4,18 @@ This project is designed to automatically log in to the Sunway iZone platform in
 
 [🌟 English](README.md) | [🌏 中文](README-CN.md)
 
+## ⚠️ **DISCLAIMER / 免责声明**
+
+**ENGLISH:**
+This software is provided "AS IS" without warranty of any kind. The authors and contributors of this project are not responsible for any consequences, damages, or issues that may arise from using this software. Users assume full responsibility for their use of this software and any resulting outcomes. Use at your own risk.
+
+**中文:**
+本软件按"现状"提供，不提供任何形式的保证。本项目的作者和贡献者不对使用本软件可能产生的任何后果、损害或问题承担责任。用户对使用本软件及其产生的任何结果承担全部责任。使用风险自负。
+
 ## Table of Contents
 
-* [Requirements](#requirements)
-* [Quick Start](#quick-start)
-
+* [Download & Installation](#download--installation)
+* [Quick Start (For Developers)](#quick-start-for-developers)
   * [1. Install uv Package Manager](#1-install-uv-package-manager)
   * [2. Install Dependencies](#2-install-dependencies)
   * [3. Configure users.csv](#3-configure-userscsv)
@@ -21,14 +28,25 @@ This project is designed to automatically log in to the Sunway iZone platform in
 
 ---
 
-## Requirements
+## Download & Installation
 
-* Python 3.8 or higher
-* It is recommended to use [`uv`](https://docs.astral.sh/uv/getting-started/installation/) for dependency management and running the script (it's faster and easier!)
+**For regular users (Recommended):**
+
+1. Go to the [Releases](https://github.com/KevinTan2025/Sunway/releases) page
+2. Download the latest version (v1.0.0) of `Sunway iCheckIn.exe`
+3. Run the executable directly - no Python installation or environment setup required!
+
+The executable includes everything you need and will create necessary files (like `users.json`) in the same directory.
 
 ---
 
-## Quick Start
+## Quick Start (For Developers)
+
+**Note:** If you downloaded the executable from Releases, you can skip this section.
+
+**Requirements for development:**
+* Python 3.8 or higher
+* It is recommended to use [`uv`](https://docs.astral.sh/uv/getting-started/installation/) for dependency management and running the script (it's faster and easier!)
 
 ### 1. Install uv Package Manager
 
@@ -86,7 +104,7 @@ id,password
 
 ### 4. (Optional) Configure ua.csv
 
-`ua.csv` allows you to set custom/bulk User-Agents for added security and device simulation. If not provided, the script will use a built-in default User-Agent.
+The script already includes a small set of common User-Agents. If you want to supply your own list, create a `ua.csv` file in the same folder. When present, the file overrides the built-in list.
 
 **Format:**
 
@@ -143,7 +161,7 @@ When running, the script will prompt you to enter the check-in code (iCheckin co
 ## ua.csv Format
 
 * Optional file
-* Used for bulk custom User-Agent
+* Overrides the internal User-Agent list
 * Only need to fill in the `user_agent` field, one UA string per line
 
 Example content:
@@ -169,6 +187,10 @@ Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ...
 3. **Can't open or error with users.csv/ua.csv?**
 
    * Make sure the file is UTF-8 encoded and the header and content format are correct
+
+4. **Where is users.json saved when using the packaged executable?**
+
+   * When running the GUI or a PyInstaller-built `.exe`, the `users.json` file will be created in the same directory as the executable. Ensure that directory is writable so your user list can be saved.
 
 ---
 

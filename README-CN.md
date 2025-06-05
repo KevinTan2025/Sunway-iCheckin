@@ -4,12 +4,19 @@
 
 [🌟 English](README.md) | [🌏 中文](README-CN.md)
 
+## ⚠️ **免责声明 / DISCLAIMER**
+
+**中文:**
+本软件按"现状"提供，不提供任何形式的保证。本项目的作者和贡献者不对使用本软件可能产生的任何后果、损害或问题承担责任。用户对使用本软件及其产生的任何结果承担全部责任。使用风险自负。
+
+**ENGLISH:**
+This software is provided "AS IS" without warranty of any kind. The authors and contributors of this project are not responsible for any consequences, damages, or issues that may arise from using this software. Users assume full responsibility for their use of this software and any resulting outcomes. Use at your own risk.
+
 
 ## 目录
 
-* [环境要求](#环境要求)
-* [快速开始](#快速开始)
-
+* [下载安装](#下载安装)
+* [开发者快速开始](#开发者快速开始)
   * [1. 安装 uv 包管理器](#1-安装-uv-包管理器)
   * [2. 安装依赖](#2-安装依赖)
   * [3. 配置用户文件 users.csv](#3-配置用户文件-userscsv)
@@ -22,14 +29,25 @@
 
 ---
 
-## 环境要求
+## 下载安装
 
-* Python 3.8 及以上
-* 推荐使用 [`uv`](https://docs.astral.sh/uv/getting-started/installation/) 进行依赖管理和运行（更快更简洁！）
+**普通用户使用（推荐）：**
+
+1. 前往 [Releases](https://github.com/KevinTan2025/Sunway/releases) 页面
+2. 下载最新版本 (v1.0.0) 的 `Sunway iCheckIn.exe`
+3. 直接运行可执行文件即可 - 无需安装Python或配置环境！
+
+可执行文件包含了所有必需的组件，并会在同一目录下创建必要的文件（如 `users.json`）。
 
 ---
 
-## 快速开始
+## 开发者快速开始
+
+**注意：** 如果您从 Releases 下载了可执行文件，可以跳过本节。
+
+**开发环境要求：**
+* Python 3.8 及以上
+* 推荐使用 [`uv`](https://docs.astral.sh/uv/getting-started/installation/) 进行依赖管理和运行（更快更简洁！)
 
 ### 1. 安装 uv 包管理器
 
@@ -87,8 +105,7 @@ id,password
 
 ### 4. 可选：配置 ua.csv
 
-`ua.csv` 用于自定义/批量设置 User-Agent，可提升安全性和模拟不同设备。
-没有 `ua.csv` 时，脚本会用内置默认 UA。
+脚本内部已自带少量常用 User-Agent。如果需要自定义或增加列表，在同一目录下创建 `ua.csv` 文件即可，文件内容会覆盖内置列表。
 
 **格式如下：**
 
@@ -145,8 +162,8 @@ python main.py
 ## ua.csv 格式说明
 
 * 可选文件
-* 用于批量自定义 User-Agent
-* 仅需填写 user\_agent 字段，每行一个 UA 字符串
+* 覆盖脚本内置的 User-Agent 列表
+* 仅需填写 `user_agent` 字段，每行一个 UA 字符串
 
 示例内容：
 
@@ -171,6 +188,10 @@ Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ...
 3. **users.csv/ua.csv 打不开或出错？**
 
    * 确保文件是 UTF-8 编码，且表头与内容格式正确
+
+4. **打包成可执行文件后，users.json 保存在哪里？**
+
+   * 在 GUI 或使用 PyInstaller 打包后的 `.exe` 运行时，`users.json` 会生成在可执行文件所在的目录。请确保该目录具有写入权限，以便保存用户列表。
 
 ---
 

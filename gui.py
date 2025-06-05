@@ -63,8 +63,8 @@ class App:
 
         self.btn_frame = ttk.Frame(master)
         self.btn_frame.grid(row=2, column=0, columnspan=4, pady=5)
-        ttk.Button(self.btn_frame, text="Add Row", command=self.add_row).pack(side="left", padx=5)
-        ttk.Button(self.btn_frame, text="Remove Row", command=self.remove_rows).pack(side="left", padx=5)
+        ttk.Button(self.btn_frame, text="Add Users", command=self.add_row).pack(side="left", padx=5)
+        ttk.Button(self.btn_frame, text="Remove Users", command=self.remove_rows).pack(side="left", padx=5)
         ttk.Button(self.btn_frame, text="Save Users", command=self.save_users_file).pack(side="left", padx=5)
         ttk.Button(self.btn_frame, text="Start Check-In", command=self.start_checkin).pack(side="left", padx=5)
 
